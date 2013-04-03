@@ -33,7 +33,8 @@ void obtainHandle(uintptr_t* handleRef, int addr) {
 
 int main(int argc, char *argv[]) {
 
-	if (ThreadCtl(_NTO_TCTL_IO, NULL) != -1) {
+	// Get root permissions.
+	if (ThreadCtl(_NTO_TCTL_IO, NULL) == -1) {
 		std::cerr << "Failed to get root permissions" << std::endl;
 		return 1;
 	}
@@ -48,14 +49,14 @@ int main(int argc, char *argv[]) {
 	obtainHandle(&out_lsb_handle, DAC_LSB);
 
 	// TODO: configure that setting.
-	out8(ad_ctrl_handle, AD_GAIN_SETTING);
+	//out8(ad_ctrl_handle, AD_GAIN_SETTING);
 
 	Sensor *sensor = new ADSensor(ctrl_handle, ad_ctrl_handle, in_msb_handle, in_lsb_handle);
 	Actuator *actuator = new DACActuator(ctrl_handle, out_msb_handle, out_lsb_handle);
 
 	PlantContext context;
 	PlantController controller(sensor, actuator);
-	UserInput input(&context);
+	UserInput input(&controller);
 
 	// Wait for user to cancel controller.
 	input.start();

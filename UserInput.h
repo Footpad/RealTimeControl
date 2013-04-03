@@ -9,17 +9,17 @@
 #define USERINPUT_H_
 
 #include "Thread.h"
-#include "PlantContext.h"
+#include "PlantController.h"
 
 class UserInput: public Thread {
 public:
-	UserInput(PlantContext *context);
+	UserInput(PlantController *context);
 	virtual ~UserInput();
 
 	void* run();
 
 private:
-	PlantContext *context;
+	PlantController *controller;
 };
 
 #endif /* USERINPUT_H_ */

@@ -11,6 +11,7 @@
 #include "ControlLoop.h"
 #include "Sensor.h"
 #include "Actuator.h"
+#include <pthread.h>
 
 class PlantController: public ControlLoop {
 public:
@@ -21,9 +22,21 @@ public:
 	void step();
 	void shutdown();
 
+	double getProportionalGain();
+	double getIntegralGain();
+	double getDerivateGain();
+
+	void setParameters(double kp, double ki, double kd);
+
 private:
 	Sensor *sensor;
 	Actuator *actuator;
+
+	double proportionalGain;
+	double integralGain;
+	double derivateGain;
+
+	pthread_mutex_t parametersMutex;
 };
 
 #endif /* PLANTCONTROLLER_H_ */

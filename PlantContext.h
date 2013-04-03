@@ -14,20 +14,6 @@ public:
 	virtual ~PlantContext();
 
 	void start();
-
-	double getProportionalGain();
-	void setProportionalGain(double p);
-
-	double getIntegralGain();
-	void setIntegralGain(double i);
-
-	double getDerivateGain();
-	void setDerivateGain(double d);
-
-private:
-	double proportionalGain;
-	double integralGain;
-	double derivateGain;
 };
 
 #endif /* PLANTCONTEXT_H_ */

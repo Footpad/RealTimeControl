@@ -15,26 +15,3 @@ PlantContext::PlantContext() {
 PlantContext::~PlantContext() {
 	// TODO Auto-generated destructor stub
 }
-
-double PlantContext::getProportionalGain() {
-	return proportionalGain;
-}
-
-void PlantContext::setProportionalGain(double p) {
-	proportionalGain = p;
-}
-
-double PlantContext::getIntegralGain() {
-	return integralGain;
-}
-
-void PlantContext::setIntegralGain(double i) {
-	integralGain = i;
-}
-
-double PlantContext::getDerivateGain() {
-	return derivateGain;
-}
-void PlantContext::setDerivateGain(double d) {
-	derivateGain = d;
-}
