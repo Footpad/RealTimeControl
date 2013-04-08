@@ -60,3 +60,12 @@ ControlLoop *PlantContext::getControlLoop() {
 void PlantContext::setControlLoop(ControlLoop *cl) {
 	controlLoop = cl;
 }
+
+void PlantContext::setRef(double newRef) {
+	ref = newRef;
+}
+
+double PlantContext::getRef() {
+	return ref;
+}
+

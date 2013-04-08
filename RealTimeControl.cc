@@ -60,12 +60,13 @@ int main(int argc, char *argv[]) {
 
 	PlantContext context;
 	PlantController controller(sensor, actuator);
-	UserInput input(&controller);
 
 	// Kick it off.
 	controller.initialize(&context);
 	context.setControlLoop(&controller);
 	context.start();
+
+	UserInput input(&context);
 
 	// Wait for user to cancel controller.
 	input.start();

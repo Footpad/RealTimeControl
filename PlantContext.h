@@ -17,6 +17,9 @@ public:
 
 	void start();
 
+	void setRef(double newRef);
+	double getRef();
+
 	double getError();
 	void setError(double error);
 	double getLastError();
@@ -25,6 +28,8 @@ public:
 	void setControlLoop(ControlLoop *cl);
 
 private:
+	double ref;
+
 	double error;
 	double lastError;
 

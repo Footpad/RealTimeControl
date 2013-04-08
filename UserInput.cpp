@@ -13,9 +13,9 @@
 
 using namespace std;
 
-UserInput::UserInput(PlantController *c) :
+UserInput::UserInput(PlantContext *c) :
 Thread("User Input"),
-controller(c) {
+context(c) {
 
 }
 
@@ -24,24 +24,41 @@ UserInput::~UserInput() {
 
 void* UserInput::run() {
 	double kp, ki, kd;
-	string inputBuffer;
+	double ref = 0.0;
+
+	char inp;
+
+
 
 	// Lower the priority of this thread so that it
 	// does not block the controller.
 	setPriority(UI_THREAD_PRIORITY);
 
+	context->setRef(ref);
+
+	cout << "Enter a command (h for help) \n";
 	while (!killThread) {
-		cout << "Enter PID controller constants (kp, ki, kd): ";
-		getline(cin, inputBuffer);
+		cout << "> ";
+		cout.flush();
 
-		if (!cin) {
-			stop();
-		} else {
-			stringstream ss;
-			ss << inputBuffer;
-			ss >> kp >> ki >> kd;
-
-			controller->setParameters(kp, ki, kd);
+		cin >> inp;
+		switch( inp ) {
+		case 'p':
+			cin >> kp >> ki >> kd;
+			((PlantController*)context->getControlLoop())->setParameters(kp, ki, kd);
+			break;
+		case 'r':
+			cin >> ref;
+			context->setRef(ref);
+			break;
+		default:
+			cout << "Invalid command!\n\n";
+		case 'h':
+			cout << "Commands are: \n" <<
+					"\th - Help (this message)\n" <<
+					"\tr - Set reference (Usage: r newRef)\n" <<
+					"\tp - Set controller parameters (Usage: p newKp newKi newKd" << endl;
+			break;
 		}
 	}
 
