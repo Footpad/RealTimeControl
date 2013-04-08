@@ -8,9 +8,11 @@
 #ifndef CONTROLLOOP_H_
 #define CONTROLLOOP_H_
 
+class PlantContext;
+
 class ControlLoop {
 public:
-	virtual void initialize() = 0;
+	virtual void initialize(PlantContext *context) = 0;
 	virtual void step() = 0;
 	virtual void shutdown() = 0;
 };

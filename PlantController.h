@@ -13,12 +13,14 @@
 #include "Actuator.h"
 #include <pthread.h>
 
+class PlantContext;
+
 class PlantController: public ControlLoop {
 public:
 	PlantController(Sensor *sensor, Actuator *actuator);
 	virtual ~PlantController();
 
-	void initialize();
+	void initialize(PlantContext *context);
 	void step();
 	void shutdown();
 
@@ -31,10 +33,14 @@ public:
 private:
 	Sensor *sensor;
 	Actuator *actuator;
+	PlantContext *context;
 
 	double proportionalGain;
 	double integralGain;
-	double derivateGain;
+	double derivativeGain;
+
+	double integral;
+	double derivative;
 
 	pthread_mutex_t parametersMutex;
 };

@@ -6,10 +6,14 @@
  */
 
 #include "PlantController.h"
+#include "PlantContext.h"
 
 PlantController::PlantController(Sensor *s, Actuator *a) :
 sensor(s),
-actuator(a) {
+actuator(a),
+proportionalGain(0.5),
+integralGain(0.5),
+derivativeGain(0.5) {
 	pthread_mutex_init(&parametersMutex, NULL);
 }
 
@@ -17,12 +21,20 @@ PlantController::~PlantController() {
 	pthread_mutex_destroy(&parametersMutex);
 }
 
-void PlantController::initialize() {
-
+void PlantController::initialize(PlantContext *c) {
+	context = c;
+	integral = 0;
+	derivative = 0;
 }
 
 void PlantController::step() {
+	double error = sensor->getValue();
+	context->setError(error);
 
+	integral = error; //integral + error;
+	derivative = (error - context->getLastError());
+
+	actuator->setValue(proportionalGain*error + integralGain*integral + derivativeGain*derivative);
 }
 
 void PlantController::shutdown() {
@@ -38,13 +50,13 @@ double PlantController::getIntegralGain() {
 }
 
 double PlantController::getDerivateGain() {
-	return derivateGain;
+	return derivativeGain;
 }
 
 void PlantController::setParameters(double kp, double ki, double kd) {
 	pthread_mutex_lock(&parametersMutex);
 	proportionalGain = kp;
 	integralGain = ki;
-	derivateGain = kd;
+	derivativeGain = kd;
 	pthread_mutex_unlock(&parametersMutex);
 }

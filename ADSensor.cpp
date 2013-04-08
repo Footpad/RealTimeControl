@@ -43,19 +43,6 @@ double ADSensor::getValue() {
 	// 7. Convert the data to a meaningful value
 	double voltage = raw_data / (double)MAX_VALUE * (double)MAX_VOLTAGE;
 
-	if(voltage > MAX_INP_VOLTAGE) {
-		//printf("\rVoltage High  ");
-		voltage = MAX_CHAR;
-	} else if(voltage < MIN_INP_VOLTAGE) {
-		//printf("\rVoltage Low   ");
-		voltage = MIN_CHAR;
-	} else {
-		//printf("\r              ");
-		// Scale voltage
-		voltage *= CONVERSION_FACTOR;
-	}
-	//fflush(stdout);
-
 	return (char)voltage;
 }
 
