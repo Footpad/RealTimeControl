@@ -33,7 +33,7 @@ void *DACActuator::run() {
 
 void DACActuator::setValue(double value) {
 	// Convert the output value to a DAC code.
-	short daCode = (value / OUTPUT_REFERENCE) * 2048 + 2048;
+	short daCode = (value / OUTPUT_REFERENCE) * 2048 + 2047;
 
 	// Clip the DAC code.
 	if (daCode > MAX_DA_CODE) {

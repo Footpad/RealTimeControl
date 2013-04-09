@@ -10,8 +10,6 @@
 
 #define MAX_VALUE (326768)
 #define MAX_VOLTAGE (10)
-#define MAX_INP_VOLTAGE (4)
-#define MIN_INP_VOLTAGE (-4)
 #define MAX_CHAR (127)
 #define MIN_CHAR (-128)
 #define CONVERSION_FACTOR (127/5)
@@ -41,9 +39,9 @@ double ADSensor::getValue() {
 	short raw_data = msb * 256 + lsb;
 
 	// 7. Convert the data to a meaningful value
-	double voltage = raw_data / (double)MAX_VALUE * (double)MAX_VOLTAGE;
+	double voltage = (raw_data / (double)MAX_VALUE) * (double)MAX_VOLTAGE;
 
-	return (char)voltage;
+	return (voltage * MAX_VOLTAGE);
 }
 
 void *ADSensor::run() {

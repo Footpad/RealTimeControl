@@ -13,6 +13,9 @@
 #include "Actuator.h"
 #include <pthread.h>
 
+#define MAX_INTEGRAL (2)
+#define MIN_INTEGRAL (-2)
+
 class PlantContext;
 
 class PlantController: public ControlLoop {
@@ -41,6 +44,8 @@ private:
 
 	double integral;
 	double derivative;
+
+	double lastOutput;
 
 	pthread_mutex_t parametersMutex;
 };

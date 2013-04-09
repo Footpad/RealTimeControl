@@ -11,9 +11,10 @@
 PlantController::PlantController(Sensor *s, Actuator *a) :
 sensor(s),
 actuator(a),
-proportionalGain(0.5),
-integralGain(0.5),
-derivativeGain(0.5) {
+proportionalGain(0.0),
+integralGain(0.0),
+derivativeGain(0.0),
+lastOutput(0.0) {
 	pthread_mutex_init(&parametersMutex, NULL);
 }
 
@@ -33,10 +34,17 @@ void PlantController::step() {
 	double error = (setPoint - currentReading);
 	context->setError(error);
 
-	integral = error; //integral + error;
+	integral += error; //integral + error;
+	if(integral > MAX_INTEGRAL) {
+		integral = MAX_INTEGRAL;
+	} else if (integral < MIN_INTEGRAL) {
+		integral = MIN_INTEGRAL;
+	}
 	derivative = (error - context->getLastError());
 
-	actuator->setValue(proportionalGain*error + integralGain*integral + derivativeGain*derivative);
+	double output = lastOutput + proportionalGain*error + integralGain*integral + derivativeGain*derivative;
+	actuator->setValue( output );
+	lastOutput = output;
 }
 
 void PlantController::shutdown() {
