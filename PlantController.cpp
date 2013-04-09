@@ -28,7 +28,9 @@ void PlantController::initialize(PlantContext *c) {
 }
 
 void PlantController::step() {
-	double error = (context->getRef() - sensor->getValue());
+	double currentReading = sensor->getValue();
+	double setPoint = context->getRef();
+	double error = (setPoint - currentReading);
 	context->setError(error);
 
 	integral = error; //integral + error;
